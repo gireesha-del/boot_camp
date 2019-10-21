@@ -1,34 +1,55 @@
+debugger;
 var app = angular.module('myApp', []);
-app.controller('Democtrl', function ($scope) {
+app.controller('Democtrl', function ($scope, $http) {
 
   $scope.employee = {
 
   };
-  $scope.employees=[];
-  $scope.gender = ["male", "female", "others"];
-  $scope.country = ["India", "Russia", "Canada", "China", "United States"];
-  $scope.state = ["Tamilnadu", "kerala", "karanataka"];
+  $scope.employees = [];
+  $scope.Gender = ["male", "female", "others"];
+  $scope.Country = ["India", "Russia", "Canada", "China", "United States"];
+  $scope.State = ["Tamilnadu", "kerala", "karanataka"];
 
+  $scope.loaddata = function () {
+    $http({
+      method: 'GET',
+      url: 'http://localhost:50557/api/values',
+    })
+      .then(function (response) {
+        debugger;
+        $scope.content = response.data;
+      });
+  }
+  $scope loadata();
+  //Create New User
+  $scope.submitform = function (empobj) {
+    debugger;
+    //$http POST function
+    $http({
 
-  $scope.submitform = function () {
-    
- var newItem={
-   'firstname':$scope.employee.firstname,
-   'lastname':$scope.employee.lastname,
-   'dateofbirth':$scope.employee.dateofbirth,
-   'phonenumber':$scope.employee.PhoneNumber, 
-   'gender':$scope.employee.gender, 
-   'address1':$scope.employee.address1,
-   'address2':$scope.employee.address2,
-   'address3':$scope.employee.address3,
-   'country':$scope.employee.country,
-   'state':$scope.employee.state,
-   'pincode':$scope.employee.pincode,
-   'employeecode':$scope.employee.employeecode,
+      method: 'POST',
+      url: 'http://localhost:50557/api/values',
+      data: empobj
 
- };
- $scope.employees.push(newItem);
-}
+    }).then(function (response) {
+      debugger;
+      $scope.content = response.data;
+    });
+  }
+  $scope.updateUser = function (empobj) {
+
+    //$http PUT function
+    $http({
+
+      method: 'PUT',
+      url: 'http://localhost:50557/api/values/1' + $scope.content.id,
+      data: empobj
+
+    }).then(function (response) {
+      debugger;
+      $scope.content = response.data;
+    });
+  }
 
 
 });
